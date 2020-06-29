@@ -39,6 +39,10 @@ This middleware should have all the requisite endpoints accept requests from the
 
 I am sorry that I can't provide much more than that. I am basically a Frontend developer and haven't written any Node since my bootcamp days!
 
+## User IDS
+
+Feel free to use Math.random(). You can also use the `uuid` NPM package (https://www.npmjs.com/package/uuid)
+
 ## I Quit
 
 If you're my replacement, please consider getting the hell out of Dodge ASAP. I get that you probably can't. I wouldn't be surprised if they locked you in before showing you all of the project details...
