@@ -1,12 +1,14 @@
 const flightInput = document.getElementById("flight");
 const seatsDiv = document.getElementById("seats-section");
 const confirmButton = document.getElementById("confirm-button");
+const errorMessageDiv = document.querySelector(".error");
 
 let selection = "";
 
-const renderSeats = () => {
+const renderSeats = (data) => {
   document.querySelector(".form-container").style.display = "block";
-
+  console.log("data", data);
+  console.log("seatinfo", data[0].isAvailable);
   const alpha = ["A", "B", "C", "D", "E", "F"];
   for (let r = 1; r < 11; r++) {
     const row = document.createElement("ol");
@@ -16,13 +18,16 @@ const renderSeats = () => {
     for (let s = 1; s < 7; s++) {
       const seatNumber = `${r}${alpha[s - 1]}`;
       const seat = document.createElement("li");
-
-      // Two types of seats to render
       const seatOccupied = `<li><label class="seat"><span id="${seatNumber}" class="occupied">${seatNumber}</span></label></li>`;
       const seatAvailable = `<li><label class="seat"><input type="radio" name="seat" value="${seatNumber}" /><span id="${seatNumber}" class="avail">${seatNumber}</span></label></li>`;
-
-      // TODO: render the seat availability based on the data...
-      seat.innerHTML = seatAvailable;
+      let foundObject = data.find((item) => {
+        return item.id === seatNumber;
+      });
+      if (foundObject.isAvailable) {
+        seat.innerHTML = seatAvailable;
+      } else {
+        seat.innerHTML = seatOccupied;
+      }
       row.appendChild(seat);
     }
   }
@@ -67,14 +72,15 @@ const toggleFormContent = (event) => {
   fetch(`/flights/${flightNumber}`)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
+      let { status } = data;
+      if (status === "flight-not-found") {
+        errorMessageDiv.innerText =
+          "Sorry, we could not find your selected flight. Please select a flight from the dropdown menu above";
+      } else {
+        let { flightArray } = data;
+        renderSeats(flightArray);
+      }
     });
-  // TODO: contact the server to get the seating availability
-  //      - only contact the server if the flight number is this format 'SA###'.
-  //      - Do I need to create an error message if the number is not valid?
-
-  // TODO: Pass the response data to renderSeats to create the appropriate seat-type.
-  renderSeats();
 };
 
 const handleConfirmSeat = (event) => {

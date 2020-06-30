@@ -11,13 +11,17 @@ const handleFlight = (req, res) => {
   const { flightNumber } = req.params;
   // get all flight numbers
   const allFlights = Object.keys(flights);
-  // is flightNumber in the array?
-  console.log("REAL FLIGHT: ", allFlights.includes(flightNumber));
+  if (!allFlights.includes(flightNumber)) {
+    res.status(200).json({ status: "flight-not-found" });
+  } else {
+    let flightArray = flights[flightNumber];
+    res.status(200).json({ status: "success", flightArray: flightArray });
+  }
 };
 
 const handleSendFlightList = (req, res) => {
   const allFlights = Object.keys(flights);
-  res.json({ allFlights: allFlights });
+  res.status(200).json({ allFlights: allFlights });
 };
 express()
   .use(function (req, res, next) {
