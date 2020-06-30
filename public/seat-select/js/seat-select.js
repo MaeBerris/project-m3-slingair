@@ -43,6 +43,24 @@ const renderSeats = () => {
   });
 };
 
+const getFlightNumbers = async () => {
+  let response = await fetch("/flights", {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+    },
+  });
+  let { allFlights } = await response.json();
+  allFlights.forEach((flight) => {
+    let option = document.createElement("option");
+    option.value = `${flight}`;
+    option.innerText = `${flight}`;
+    flightInput.appendChild(option);
+  });
+};
+
+getFlightNumbers();
+
 const toggleFormContent = (event) => {
   const flightNumber = flightInput.value;
   console.log("toggleFormContent: ", flightNumber);
@@ -75,4 +93,3 @@ const handleConfirmSeat = (event) => {
   //window.location = '/seat-select/confirmed?userID=${resultofFetch}'
 };
 //then in another page window.location.search   this will output this string "?userID=uslkdjf-sdflkjs-sdf" and you can plug that in the body of another request to get the rest of the page or as req.params
-flightInput.addEventListener("blur", toggleFormContent);

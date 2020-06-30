@@ -11,10 +11,12 @@
             <header class='header'>
                 <h1 class='header-logo'>Air Slingshot</h1>
             </div>
-            <div class="flight-select">
+            <form class="flight-select">
                 <label for="flight">Flight Number :</label>
-                <input name="flight" id="flight" class="flight" type="text" placeholder="flight #" />
-            </div>
+                <select name="flight" id="flight" class="flight"  placeholder="flight #"  onchange='toggleFormContent(event)'>
+                    <option value="undefined">Select</option>
+                </select>
+            </form>
             <div class="form-container">
                 <h2>Select your seat and Provide your information!</h2>
                 <form id="seats" class="content" name="salesForm" onsubmit="handleConfirmSeat(event)">
