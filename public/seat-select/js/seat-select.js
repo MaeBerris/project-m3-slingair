@@ -2,11 +2,11 @@ const flightInput = document.getElementById("flight");
 const seatsDiv = document.getElementById("seats-section");
 const confirmButton = document.getElementById("confirm-button");
 const errorMessageDiv = document.querySelector(".error");
-
 let selection = "";
 
 const renderSeats = (data) => {
   document.querySelector(".form-container").style.display = "block";
+  seatsDiv.innerHTML = "";
   console.log("data", data);
   console.log("seatinfo", data[0].isAvailable);
   const alpha = ["A", "B", "C", "D", "E", "F"];
