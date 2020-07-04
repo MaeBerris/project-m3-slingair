@@ -77,6 +77,20 @@ const handleConfirmation = (req, res) => {
   }
 };
 
+const handleGetEmail = (req, res) => {
+  let { email } = req.params;
+  let isEmailInArray = reservations.some((item) => {
+    return item.email === email;
+  });
+  if (!isEmailInArray) {
+    return res.status(404).json({ status: "email-not-found" });
+  } else {
+    let userArray = reservations.filter((item) => {
+      return item.email === email;
+    });
+    return res.status(200).json({ status: "success", userArray: userArray });
+  }
+};
 express()
   .use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -96,5 +110,6 @@ express()
   .get("/flights/:flightNumber", handleFlight)
   .post("/users", handleUserSubmit)
   .get("/confirmation/:userId", handleConfirmation)
+  .get("/reservation/:email", handleGetEmail)
   .use((req, res) => res.send("Not Found"))
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));
