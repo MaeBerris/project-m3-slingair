@@ -39,6 +39,10 @@ const handleUserSubmit = (req, res) => {
       return res.status(409).json({ status: "missmatch-user-info" });
     } else if (user.flight === flight) {
       user.seat.push(seat);
+      let FlightSeatToChange = flights[flight].find((item) => {
+        return item.id === seat;
+      });
+      FlightSeatToChange.isAvailable = false;
       return res.status(201).json({ status: "success", userId: user.id });
     }
   }
@@ -50,6 +54,10 @@ const handleUserSubmit = (req, res) => {
     surName: surName,
     email: email,
   };
+  let FlightSeatToChange = flights[flight].find((item) => {
+    return item.id === seat;
+  });
+  FlightSeatToChange.isAvailable = false;
   reservations.push(newUser);
   console.log(reservations);
   res.status(201).json({ status: "success", userId: newUser.id });
