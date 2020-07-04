@@ -2,13 +2,11 @@ const flightInput = document.getElementById("flight");
 const seatsDiv = document.getElementById("seats-section");
 const confirmButton = document.getElementById("confirm-button");
 const errorMessageDiv = document.querySelector(".error");
-let selection = "";
+let selectedSeat = "";
 
 const renderSeats = (data) => {
   document.querySelector(".form-container").style.display = "block";
   seatsDiv.innerHTML = "";
-  console.log("data", data);
-  console.log("seatinfo", data[0].isAvailable);
   const alpha = ["A", "B", "C", "D", "E", "F"];
   for (let r = 1; r < 11; r++) {
     const row = document.createElement("ol");
@@ -41,6 +39,7 @@ const renderSeats = (data) => {
           document.getElementById(x.value).classList.remove("selected");
         }
       });
+      selectedSeat = seat.value;
       document.getElementById(seat.value).classList.add("selected");
       document.getElementById("seat-number").innerText = `(${selection})`;
       confirmButton.disabled = false;
@@ -83,19 +82,31 @@ const toggleFormContent = (event) => {
     });
 };
 
-const handleConfirmSeat = (event) => {
+const handleConfirmSeat = async (event) => {
   event.preventDefault();
-  // TODO: everything in here!
-  fetch("/users", {
+  const response = await fetch("/users", {
     method: "POST",
     body: JSON.stringify({
       givenName: document.getElementById("givenName").value,
+      surName: document.querySelector("#surname").value,
+      email: document.querySelector("#email").value,
+      seat: selectedSeat,
+      flight: flightInput.value,
     }),
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
   });
-  //window.location = '/seat-select/confirmed?userID=${resultofFetch}'
+  const data = await response.json();
+  if (data.status === "bad-request") {
+    errorMessageDiv.innerText =
+      "Missing request info, please fill in all form fields";
+  } else if (data.status === "missmatch-user-info") {
+    errorMessageDiv.innerText =
+      "We already have a user registered to this email. Please make sure your Name ans SurName match your previous order";
+  } else {
+    window.location = `/seat-select/confirmed.html?userId=${data.userId}`;
+  }
 };
 //then in another page window.location.search   this will output this string "?userID=uslkdjf-sdflkjs-sdf" and you can plug that in the body of another request to get the rest of the page or as req.params
