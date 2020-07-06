@@ -14,6 +14,12 @@
       <header class="header">
       <h1 class="header-logo">Air Slingshot</h1>
     </div>
+    <form class="flight-select">
+      <label for="flight">Flight Number :</label>
+      <select name="flight" id="flight" class="flight"  placeholder="flight #"  onchange='toggleFormContent(event)'>
+          <option value="undefined">Select</option>
+      </select>
+  </form>
     <h1>View Reservation</h1>
     <div id="form-content">
       <form
