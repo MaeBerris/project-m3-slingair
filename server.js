@@ -29,20 +29,24 @@ const handleSendFlightList = (req, res) => {
 const handleUserSubmit = (req, res) => {
   let { givenName, surName, email, seat, flight } = req.body;
   let user = reservations.find((item) => {
-    return item.email === email;
+    if (item.email === email && item.flight === flight) {
+      return item;
+    }
   });
+
   if (!givenName || !surName || !email || !seat || !flight) {
     return res.status(400).json({ status: "bad-request" });
   }
   if (user !== undefined) {
     if (user.surName !== surName || user.givenName !== givenName) {
       return res.status(409).json({ status: "missmatch-user-info" });
-    } else if (user.flight === flight) {
+    } else {
       user.seat.push(seat);
       let FlightSeatToChange = flights[flight].find((item) => {
         return item.id === seat;
       });
       FlightSeatToChange.isAvailable = false;
+      console.log(reservations);
       return res.status(201).json({ status: "success", userId: user.id });
     }
   }
@@ -54,6 +58,7 @@ const handleUserSubmit = (req, res) => {
     surName: surName,
     email: email,
   };
+  //MAKE THIS INTO A FUNCTION TO REDUCE CLUTTER
   let FlightSeatToChange = flights[flight].find((item) => {
     return item.id === seat;
   });
@@ -69,7 +74,6 @@ const handleConfirmation = (req, res) => {
   let user = reservations.find((reservation) => {
     return reservation.id === userId;
   });
-  console.log("user that is sent", user);
   if (user === undefined) {
     res.status(404).json({ status: "no-user" });
   } else {
