@@ -10,7 +10,7 @@ const reservations = [
   {
     id: "eeac240a-89dd-40f2-b937-03ba1acb5501",
     flight: "SA123",
-    seat: ["1C", "1D"],
+    seat: ["2C", "3B"],
     givenName: "Mae",
     surName: "Berris",
     email: "maeberris@outlook.com",
@@ -18,7 +18,7 @@ const reservations = [
   {
     id: "9bb27b4d-104c-4c85-a5de-7ca7167bd74b",
     flight: "SA231",
-    seat: ["10F"],
+    seat: ["1C"],
     givenName: "Mae",
     surName: "Berris",
     email: "maeberris@outlook.com",

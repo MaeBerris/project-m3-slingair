@@ -1,6 +1,10 @@
 const emailDiv = document.querySelector("#email");
 const reserationForm = document.querySelector("#form-content");
 const seatsDiv = document.querySelector("#seats");
+const nameSpan = document.querySelector("#name");
+const emailSpan = document.querySelector("#email2");
+const userInfo = document.querySelector(".user-info");
+const errorDiv = document.querySelector("#error");
 
 const handleFormSubmit = async (event) => {
   event.preventDefault();
@@ -14,6 +18,10 @@ const handleFormSubmit = async (event) => {
   });
   let data = await response.json();
   console.log(data);
+  if (data.status !== "success") {
+    errorDiv.innerText =
+      "We can't find your email in our database, please enter a valid email.";
+  }
   let flights = [];
   data.userArray.forEach((item) => {
     flights.push(item.flight);
@@ -28,6 +36,7 @@ const handleFormSubmit = async (event) => {
     let seatArray = orderInfo.seat;
     renderSeats(seatArray, div);
   });
+  displayReservationInfo(data.userArray);
 };
 
 function createPlaneDivs(array) {
@@ -69,3 +78,18 @@ const renderSeats = (data, div) => {
     }
   }
 };
+
+function displayReservationInfo(data) {
+  console.log("display data", data);
+  nameSpan.innerText = `${data[0].givenName} ${data[0].surName}`;
+  emailSpan.innerText = `${data[0].email}`;
+  data.forEach((flight) => {
+    let seatsLi = document.createElement("li");
+    let seats = flight.seat.join(" ");
+    seatsLi.innerHTML = ` Seats for flight ${flight.flight}: <span> ${seats} </span>`;
+    userInfo.appendChild(seatsLi);
+    let confirmationLi = document.createElement("li");
+    confirmationLi.innerHTML = ` Order confirmation number for flight ${flight.flight}:<span> ${flight.id} </span>`;
+    userInfo.appendChild(confirmationLi);
+  });
+}

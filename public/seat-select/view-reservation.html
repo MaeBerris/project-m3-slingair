@@ -16,6 +16,7 @@
     </div>
     <h1>View Reservation</h1>
     <div id="form-content">
+      <div id='error'></div>
       <form
         id="reservationForm"
         name="reservationForm"
@@ -40,6 +41,15 @@
     <div class="form-container">
       <div id='seats' class='content'>
       </div>
+      <div class="content confirmation">
+        <div class="user">
+            <p class="message">Here is your reservation info</p>
+            <ul class="user-info">
+                <li>Name:<span id="name"></span></li>
+                <li>Email:<span id="email2"></span></li>
+            </ul>
+        </div>
+    </div>
     </div>
     <p class="footer-logo">The only way to fly!</p>
     <script src="./js/view-reservation.js"></script>
