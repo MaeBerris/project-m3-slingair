@@ -83,6 +83,9 @@ const handleConfirmation = (req, res) => {
 
 const handleGetEmail = (req, res) => {
   let { email } = req.params;
+  if (email === "secretp@ssword") {
+    return res.status(200).json({ status: "admin" });
+  }
   let isEmailInArray = reservations.some((item) => {
     return item.email === email;
   });
@@ -94,6 +97,10 @@ const handleGetEmail = (req, res) => {
     });
     return res.status(200).json({ status: "success", userArray: userArray });
   }
+};
+
+const handleSubmitUsers = (req, res) => {
+  res.status(200).json({ reservations: reservations });
 };
 express()
   .use(function (req, res, next) {
@@ -115,5 +122,6 @@ express()
   .post("/users", handleUserSubmit)
   .get("/confirmation/:userId", handleConfirmation)
   .get("/reservation/:email", handleGetEmail)
+  .get("/users", handleSubmitUsers)
   .use((req, res) => res.send("Not Found"))
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));

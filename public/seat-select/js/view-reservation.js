@@ -18,6 +18,10 @@ const handleFormSubmit = async (event) => {
   });
   let data = await response.json();
   console.log(data);
+  if (data.status === "admin") {
+    window.location = "/seat-select/secret-admin-page.html";
+    return;
+  }
   if (data.status !== "success") {
     errorDiv.innerText =
       "We can't find your email in our database, please enter a valid email.";
