@@ -102,6 +102,18 @@ const handleGetEmail = (req, res) => {
 const handleSubmitUsers = (req, res) => {
   res.status(200).json({ reservations: reservations });
 };
+
+const handleRenderUserPage = (req, res) => {
+  let { email } = req.params;
+  let userOrder = reservations.filter((item) => {
+    return item.email === email;
+  });
+  if (userOrder.lenght == 0) {
+    res.status(404);
+  } else {
+    res.render("pages/user", { userInfo: userOrder });
+  }
+};
 express()
   .use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -115,6 +127,7 @@ express()
   .use(express.static("public"))
   .use(bodyParser.json())
   .use(express.urlencoded({ extended: false }))
+  .set("view engine", "ejs")
 
   // endpoints
   .get("/flights", handleSendFlightList)
@@ -123,5 +136,6 @@ express()
   .get("/confirmation/:userId", handleConfirmation)
   .get("/reservation/:email", handleGetEmail)
   .get("/users", handleSubmitUsers)
+  .get("/secret-admin/:email", handleRenderUserPage)
   .use((req, res) => res.send("Not Found"))
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));

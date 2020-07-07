@@ -1,6 +1,6 @@
 const seatsDiv = document.querySelector("#seats");
 
-const handleFormSubmit = async () => {
+const renderPlanesMap = async () => {
   let response = await fetch(`/users`, {
     method: "GET",
     headers: {
@@ -33,7 +33,7 @@ const handleFormSubmit = async () => {
   });
 };
 
-handleFormSubmit();
+renderPlanesMap();
 
 function createPlaneDivs(array) {
   array.forEach((flight) => {
@@ -63,7 +63,6 @@ const renderSeats = (data, div, flightInfo, reservations) => {
         return item === seatNumber;
       });
       const seat = document.createElement("li");
-      // const seatOccupied = `<li><label class="seat"><span id="${seatNumber}" class="occupied">${seatNumber}</span></label></li>`;
       const seatAvailable = `<li><label class="seat"><span id="${seatNumber}" class="avail">${seatNumber}</span></label></li>`;
 
       if (!foundObject) {
@@ -74,7 +73,7 @@ const renderSeats = (data, div, flightInfo, reservations) => {
             return item;
           }
         });
-        seat.innerHTML = `<li><label class="seat"><span id="${seatNumber}" class="occupied"><a href=/secret-admin/${userInfo.id}>${userInfo.surName}</a></span></label></li>`;
+        seat.innerHTML = `<li><label class="seat"><span id="${seatNumber}" class="occupied"><a href=/secret-admin/${userInfo.email}>${userInfo.surName}</a></span></label></li>`;
       }
       row.appendChild(seat);
     }
